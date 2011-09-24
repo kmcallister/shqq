@@ -12,12 +12,18 @@ import Control.Applicative
 import Control.Exception ( evaluate )
 import Data.Char
 import Data.Foldable ( asum )
+import Data.Typeable ( Typeable, cast )
 import Text.Parsec hiding ( (<|>), many )
 import Text.Parsec.String
 import System.IO
 
 import qualified System.Posix.Escape as E
 import qualified System.Process      as P
+
+showNonString :: (Typeable a, Show a) => a -> String
+showNonString x = case cast x of
+    Just y  -> y
+    Nothing -> show x
 
 data Tok
     = Lit String
@@ -56,8 +62,8 @@ mkExp toks = [| runCmd (concat $strs) |] where
     strs = listE (map f toks)
     var  = varE . mkName
     f (Lit     x) = [| x |]
-    f (VarOne  v) = [| E.escape $(var v) |]
-    f (VarMany v) = var v
+    f (VarOne  v) = [| E.escape (showNonString $(var v)) |]
+    f (VarMany v) = [| showNonString $(var v) |]
 
 shExp :: String -> Q Exp
 shExp xs = case parse parseToks "System.ShQQ expression" xs of
