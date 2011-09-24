@@ -21,7 +21,8 @@ import qualified System.Process      as P
 
 data Tok
     = Lit String
-    | Var String
+    | VarOne  String
+    | VarMany String
     deriving (Show)
 
 parseToks :: Parser [Tok]
@@ -31,11 +32,13 @@ parseToks = many part where
     -- NB:  '\'' excluded
 
     ident = some (satisfy isIdent)
+    var =     VarOne  <$> ident
+          <|> VarMany <$  char '+' <*> ident
     part = asum [
         char '\\' *> ( Lit "\\" <$ char '\\'
                   <|>  Lit "$"  <$ char '$' )
-        , Var <$ char '$' <*>
-            ( ident <|> between (char '{') (char '}') ident )
+        , char '$' *>
+            ( var <|> between (char '{') (char '}') var )
       , Lit <$> some (noneOf "$\\") ]
 
 runCmd :: String -> IO String
@@ -51,8 +54,10 @@ runCmd cmd = do
 mkExp :: [Tok] -> Q Exp
 mkExp toks = [| runCmd (concat $strs) |] where
     strs = listE (map f toks)
-    f (Lit x) = [| x |]
-    f (Var v) = [| E.escape $(varE (mkName v)) |]
+    var  = varE . mkName
+    f (Lit     x) = [| x |]
+    f (VarOne  v) = [| E.escape $(var v) |]
+    f (VarMany v) = var v
 
 shExp :: String -> Q Exp
 shExp xs = case parse parseToks "System.ShQQ expression" xs of
