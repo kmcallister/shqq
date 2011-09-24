@@ -56,7 +56,7 @@ mkExp toks = [| runCmd (concat $strs) |] where
 
 shExp :: String -> Q Exp
 shExp xs = case parse parseToks "System.ShQQ expression" xs of
-    Left  e -> error (show e)
+    Left  e -> error ('\n' : show e)
     Right t -> mkExp t
 
 sh :: QuasiQuoter
