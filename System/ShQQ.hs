@@ -47,8 +47,8 @@ parseToks = many part where
             ( var <|> between (char '{') (char '}') var )
       , Lit <$> some (noneOf "$\\") ]
 
-runCmd :: String -> IO String
-runCmd cmd = do
+readShellCommand :: String -> IO String
+readShellCommand cmd = do
     (Nothing, Just hOut, Nothing, hProc) <- P.createProcess $
         (P.shell cmd) { P.std_out = P.CreatePipe }
     out <- hGetContents hOut
@@ -58,7 +58,7 @@ runCmd cmd = do
     return out
 
 mkExp :: [Tok] -> Q Exp
-mkExp toks = [| runCmd (concat $strs) |] where
+mkExp toks = [| readShellCommand (concat $strs) |] where
     strs = listE (map f toks)
     var  = varE . mkName
     f (Lit     x) = [| x |]
