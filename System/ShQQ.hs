@@ -4,6 +4,8 @@
 
 module System.ShQQ
     ( sh
+    , readShellCommand
+    , showNonString
     ) where
 
 import Language.Haskell.TH
