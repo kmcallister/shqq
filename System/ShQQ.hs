@@ -48,7 +48,7 @@ parseToks = many part where
     part = asum [
         char '\\' *> ( Lit "\\" <$ char '\\'
                   <|>  Lit "$"  <$ char '$' )
-        , char '$' *>
+      , char '$' *>
             ( var <|> between (char '{') (char '}') var )
       , Lit <$> some (noneOf "$\\") ]
 
