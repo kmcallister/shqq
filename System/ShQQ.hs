@@ -30,8 +30,8 @@ import Text.Parsec.String
 import System.IO
 import System.Exit
 
-import qualified System.Posix.Escape as E
-import qualified System.Process      as P
+import qualified System.Posix.Escape.Unicode as E
+import qualified System.Process as P
 
 -- | Acts like the identity function on @'String'@, and
 -- like @'show'@ on other types.
