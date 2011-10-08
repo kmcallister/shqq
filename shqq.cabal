@@ -2,14 +2,21 @@ name:                shqq
 version:             0.1
 license:             BSD3
 license-file:        LICENSE
-synopsis:            FIXME
-category:            FIXME
+synopsis:            Embed shell commands with interpolated Haskell variables, and capture output
+category:            System
 author:              Keegan McAllister <mcallister.keegan@gmail.com>
 maintainer:          Keegan McAllister <mcallister.keegan@gmail.com>
 build-type:          Simple
 cabal-version:       >=1.6
 description:
-    FIXME
+    This library provides a quasiquoter for executing shell commands, somewhat
+    similar to Perl's backtick operator.  Shell commands are IO actions, and
+    they capture the command's standard output as a @String@ result.
+    .
+    You can use Haskell variables in a shell command.  A string representation
+    of the contents will be interpolated.  The shell will see each interpolated
+    variable as a single token without interpreting special characters, unless
+    you choose otherwise.
 
 extra-source-files:
     README

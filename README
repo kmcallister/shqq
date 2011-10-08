@@ -1,9 +1,12 @@
-FIXME
+This library provides a quasiquoter for executing shell commands in Haskell,
+somewhat similar to Perl's backtick operator.  Shell commands are IO actions,
+and they capture the command's standard output as a String result.  You can
+also interpolate Haskell variables into a command.
 
-Documentation is hosted at http://hackage.haskell.org/package/FIXME
+Documentation is hosted at http://hackage.haskell.org/package/shqq
 
 To build the documentation yourself, run
 
   $ cabal configure && cabal haddock --hyperlink-source
 
-This will produce HTML documentation under dist/doc/html/FIXME
+This will produce HTML documentation under dist/doc/html/shqq
