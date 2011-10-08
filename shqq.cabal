@@ -17,24 +17,32 @@ description:
     of the contents will be interpolated.  The shell will see each interpolated
     variable as a single token without interpreting special characters, unless
     you choose otherwise.
+    .
+    Note: The shell escaping is not correct for the Windows shell.  This library
+    should fail to build on Windows, as well.
 
 extra-source-files:
     README
 
-library
-  exposed-modules:
-      System.ShQQ
-  ghc-options:      -Wall
-  build-depends:
-      base             >= 3 && < 5
-    , template-haskell >= 2.3
-    , process          >= 1.0
-    , shell-escape     >= 0.1
-    , parsec           >= 3.1
+-- Our shell escaping is not correct on Windows.  We make the project Unix-only
+-- in two ways: the 'if ! os(windows)' conditional, and the 'unix' dependency.
 
-  other-extensions:
-      TemplateHaskell
-    , CPP
+library
+  if ! os(windows)
+    exposed-modules:
+        System.ShQQ
+    ghc-options:      -Wall
+    build-depends:
+        base             >= 3 && < 5
+      , template-haskell >= 2.3
+      , process          >= 1.0
+      , shell-escape     >= 0.1
+      , parsec           >= 3.1
+      , unix
+
+    other-extensions:
+        TemplateHaskell
+      , CPP
 
 source-repository head
     type:     git
