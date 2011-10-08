@@ -20,9 +20,12 @@ description:
     .
     Note: The shell escaping is not correct for the Windows shell.  This library
     should fail to build on Windows, as well.
+    .
+    Examples of using this library are included in @examples/@.
 
 extra-source-files:
     README
+  , examples/dupe.hs
 
 -- Our shell escaping is not correct on Windows.  We make the project Unix-only
 -- in two ways: the 'if ! os(windows)' conditional, and the 'unix' dependency.
