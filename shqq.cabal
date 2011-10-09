@@ -38,7 +38,7 @@ library
     build-depends:
         base             >= 3 && < 5
       , template-haskell >= 2.3
-      , shell-escape     >= 0.1
+      , posix-escape     >= 0.1
       , parsec           >= 3.1
       , unix
 
