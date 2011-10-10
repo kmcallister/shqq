@@ -129,6 +129,12 @@ variable as a single argument.
 cat: foo bar: No such file or directory
 *** Exception: ExitFailure 1
 
+You can also write @${x}@ to separate the variable name from
+adjacent characters.
+
+>>> let x = "b" in [sh| echo a${x}c |]
+"abc\n"
+
 Be careful: the automatic escaping means that @[sh| cat '$x'
 |]@ is /less safe/ than @[sh| cat $x |]@, though it will
 work \"by accident\" in common cases.
