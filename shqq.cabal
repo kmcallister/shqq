@@ -28,30 +28,29 @@ extra-source-files:
   , examples/dupe.hs
 
 -- Our shell escaping is not correct on Windows.  We make the project Unix-only
--- in two ways: the 'if ! os(windows)' conditional, and the 'unix' dependency.
+-- in two ways: the 'unix' dependency, and a CPP macro check in ShQQ.hs.
 
 library
-  if ! os(windows)
-    exposed-modules:
-        System.ShQQ
-    ghc-options:      -Wall
-    build-depends:
-        base             >= 3 && < 5
-      , template-haskell >= 2.3
-      , posix-escape     >= 0.1
-      , parsec           >= 3.1
-      , unix
+  exposed-modules:
+      System.ShQQ
+  ghc-options:      -Wall
+  build-depends:
+      base             >= 3 && < 5
+    , template-haskell >= 2.3
+    , posix-escape     >= 0.1
+    , parsec           >= 3.1
+    , unix
 
-      -- NB: process-1.0 has a Unicode handling bug which makes shell escaping
-      -- ineffective, compromising security.  See:
-      --
-      -- http://hackage.haskell.org/trac/ghc/ticket/4006
-      -- http://hackage.haskell.org/trac/ghc/ticket/1414
-      , process          >= 1.1
+    -- NB: process-1.0 has a Unicode handling bug which makes shell escaping
+    -- ineffective, compromising security.  See:
+    --
+    -- http://hackage.haskell.org/trac/ghc/ticket/4006
+    -- http://hackage.haskell.org/trac/ghc/ticket/1414
+    , process          >= 1.1
 
-    other-extensions:
-        TemplateHaskell
-      , CPP
+  other-extensions:
+      TemplateHaskell
+    , CPP
 
 source-repository head
     type:     git

@@ -33,6 +33,10 @@ import System.Exit
 import qualified System.Posix.Escape.Unicode as E
 import qualified System.Process as P
 
+#if defined(mingw32_HOST_OS)
+#error shqq is not supported on Windows.
+#endif
+
 -- | Acts like the identity function on @'String'@, and
 -- like @'show'@ on other types.
 showNonString :: (Typeable a, Show a) => a -> String
